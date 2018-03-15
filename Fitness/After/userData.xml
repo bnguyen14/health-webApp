@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<data>
+	<user>
+		<fName>Bao</fName>
+		<lName>Nguyen</lName>
+		<age/>
+		<height/>
+		<weight/>
+		<HR/>
+		<SYS/>
+		<DIA/>
+		<exercises>
+			<running/>
+			<upperBody/>
+			<lowerBody/>
+			<core/>
+		</exercises>
+	</user>
+</data>

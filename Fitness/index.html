@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+	<script type="text/javascript">
+
+	var xmlHttp, x, first, last, age, height, weight, heartRate, sys, dia, run, upper, lower, core;
+
+	function checkForm()
+	{
+		
+	}
+	
+	function saveUser()
+	{
+		try{
+			first = document.getElementById('fname').value.trim();
+		}catch(e){}
+		try{
+			last = document.getElementById('lname').value.trim();
+		}catch(e){}
+		
+		age = document.getElementById('age2').value + document.getElementById('age1').value;
+		height = document.getElementById('height2').value + "feet " + document.getElementById('height1').value + "inches";
+		weight = document.getElementById('weight3').value + document.getElementById('weight2').value + document.getElementById('weight1').value + "lb";
+		heartRate = document.getElementById('hr3').value + document.getElementById('hr2').value + document.getElementById('hr1').value + "bpm";
+		sys = document.getElementById('sys3').value + document.getElementById('sys2').value + document.getElementById('sys1').value;
+		dia = document.getElementById('dia3').value + document.getElementById('dia2').value + document.getElementById('dia1').value;
+		run = document.getElementById('runTime2').value + ":" + document.getElementById('runTime1').value;
+		upper = document.getElementById('upperTime2').value + ":" + document.getElementById('upperTime1').value;
+		lower = document.getElementById('lowerTime2').value + ":" + document.getElementById('lowerTime1').value;
+		core = document.getElementById('coreTime2').value + ":" + document.getElementById('coreTime1').value;
+		
+		
+		xmlHttp=getHTTPObject();
+		if (xmlHttp==null)
+		{
+			alert ("Your browser does not support AJAX!");
+			return;
+		}
+		
+		//var user = xmlHttp.responseXML.getElementsByTagName("user");
+		
+		var url="addDataToXML.php";
+		url=url+"?first="+first;
+		url=url+"&last="+last;
+		url=url+"&age="+age;
+		url=url+"&height="+height;
+		url=url+"&weight="+weight;
+		url=url+"&hr="+heartRate;
+		url=url+"&sys="+sys;
+		url=url+"&dia="+dia;
+		url=url+"&run="+run;
+		url=url+"&upper="+upper;
+		url=url+"&lower="+lower;
+		url=url+"&core="+core;
+		
+		//xmlHttp.onreadystatechange=stateChanged;
+		
+		xmlHttp.open("GET",url,true);
+		xmlHttp.send(null);
+		//alert(age + ", " + height + ", " + weight);
+		url="userData.xml"
+		
+		xmlHttp.onreadystatechange=stateChanged;
+		
+		xmlHttp.open("GET",url,true);
+		xmlHttp.send(null);
+	}
+	
+	function getHTTPObject() 
+	{
+		var obj;
+		if (window.XMLHttpRequest) 
+		{
+			obj = new XMLHttpRequest();
+		} else if (window.ActiveXObject) 
+		{
+			obj = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		return obj;
+	}
+
+	function stateChanged() 
+	{
+		
+		document.getElementById("username").innerHTML = "User";
+		if (xmlHttp.readyState==4)
+		{
+			var user = xmlHttp.responseXML.getElementsByTagName("user");
+			try{
+				//if(document.getElementById('fname').value!='')
+				//{
+					//document.getElementById('fname').value = '';
+				//}
+				//if(document.getElementById('lname').value!='')
+				//{
+					//document.getElementById('lname').value = '';
+				//}
+				first = user[0].getElementsByTagName("fName")[0].firstChild.nodeValue;
+				document.getElementById("username").innerHTML = first;
+				document.getElementById("firstName").innerHTML = first;
+				document.getElementById("fname").value = first;
+				last = user[0].getElementsByTagName("lName")[0].firstChild.nodeValue;
+				document.getElementById("lastName").innerHTML = last;
+				document.getElementById("lname").value = last;
+				document.getElementById('nameForm').style.display = 'none';
+				document.getElementById('nameInfo').style.display = 'block';
+			}catch(e){
+				first = '';
+				last = '';
+			}
+			try{
+				age = user[0].getElementsByTagName("age")[0].firstChild.nodeValue;
+				document.getElementById("age").innerHTML = age;
+				document.getElementById('ageForm').style.display = 'none';
+				document.getElementById('ageInfo').style.display = 'block';
+			}catch(e){
+				age = '';
+			}
+			try{
+				height = user[0].getElementsByTagName("height")[0].firstChild.nodeValue;
+				document.getElementById("height").innerHTML = height;
+				document.getElementById('heightForm').style.display = 'none';
+				document.getElementById('heightInfo').style.display = 'block';
+			}catch(e){
+				height = '';
+			}
+			try{
+				weight = user[0].getElementsByTagName("weight")[0].firstChild.nodeValue;
+				document.getElementById("weight").innerHTML = weight;
+				document.getElementById('weightForm').style.display = 'none';
+				document.getElementById('weightInfo').style.display = 'block';
+			}catch(e){
+				weight = '';
+			}
+			try{	
+				heartRate = user[0].getElementsByTagName("HR")[0].firstChild.nodeValue;
+				document.getElementById("hr").innerHTML = heartRate;
+				document.getElementById('hrForm').style.display = 'none';
+				document.getElementById('hrInfo').style.display = 'block';
+			}catch(e){
+				heartRate = '';
+			}
+			try{
+				sys = user[0].getElementsByTagName("SYS")[0].firstChild.nodeValue;
+				document.getElementById("sys").innerHTML = sys;
+				dia = user[0].getElementsByTagName("DIA")[0].firstChild.nodeValue;
+				document.getElementById("dia").innerHTML = dia;
+				document.getElementById('bpForm').style.display = 'none';
+				document.getElementById('bpInfo').style.display = 'block';
+			}catch(e){
+				sys = '';
+				dia = '';
+			}
+			try{
+				run = user[0].getElementsByTagName("running")[0].firstChild.nodeValue;
+				document.getElementById("run").innerHTML = run;
+				document.getElementById('runForm').style.display = 'none';
+				document.getElementById('runInfo').style.display = 'block';
+			}catch(e){
+				run = '';
+			}
+			try{
+				upper = user[0].getElementsByTagName("upperBody")[0].firstChild.nodeValue;
+				document.getElementById("upper").innerHTML = upper;
+				document.getElementById('ubForm').style.display = 'none';
+				document.getElementById('ubInfo').style.display = 'block';
+			}catch(e){
+				upper = '';
+			}
+			try{
+				lower = user[0].getElementsByTagName("lowerBody")[0].firstChild.nodeValue;
+				document.getElementById("lower").innerHTML = lower;
+				document.getElementById('lbForm').style.display = 'none';
+				document.getElementById('lbInfo').style.display = 'block';
+			}catch(e){
+				lower = '';
+			}
+			try{
+				core = user[0].getElementsByTagName("core")[0].firstChild.nodeValue;
+				document.getElementById("core").innerHTML = core;
+				document.getElementById('coreForm').style.display = 'none';
+				document.getElementById('coreInfo').style.display = 'block';
+			}catch(e){
+				core = '';
+			}
+		}
+	}
+
+	function update()
+	{
+		xmlHttp=getHTTPObject();
+		if (xmlHttp==null)
+		{
+			alert ("Your browser does not support AJAX!");
+			return;
+		}
+  
+		var url="userData.xml";
+  
+		xmlHttp.onreadystatechange=stateChanged;
+
+		xmlHttp.open("GET",url,true);
+		xmlHttp.send(null);
+		
+		//loads list of age options
+		
+		var options = [];
+		var heights = [];
+		var times = [];
+		var option = document.createElement('option');
+		option.text = option.value = "";
+		
+		options.push(option.outerHTML);
+		heights.push(option.outerHTML);
+		times.push(option.outerHTML);
+		
+		for (var i = 0; i < 10; ++i)
+		{
+			option.text = option.value = i;
+			options.push(option.outerHTML);
+		}
+		for(var j = 0; j < 12; ++j)
+		{
+			option.text = option.value = j;
+			heights.push(option.outerHTML);
+		}
+		for(var k = 0; k < 61; ++k)
+		{
+			option.text = option.value = k;
+			times.push(option.outerHTML);
+		}
+		
+		var list = document.getElementById("age1");
+		list.insertAdjacentHTML('beforeEnd', options.join('\n'));
+		list = document.getElementById("age2");
+		list.insertAdjacentHTML('beforeEnd', options.join('\n'));
+		list = document.getElementById("height1");
+		list.insertAdjacentHTML('beforeEnd', heights.join('\n'));
+		list = document.getElementById("height2");
+		list.insertAdjacentHTML('beforeEnd', heights.join('\n'));
+		list = document.getElementById("weight1");
+		list.insertAdjacentHTML('beforeEnd', options.join('\n'));
+		list = document.getElementById("weight2");
+		list.insertAdjacentHTML('beforeEnd', options.join('\n'));
+		list = document.getElementById("weight3");
+		list.insertAdjacentHTML('beforeEnd', options.join('\n'));
+		list = document.getElementById("hr1");
+		list.insertAdjacentHTML('beforeEnd', options.join('\n'));
+		list = document.getElementById("hr2");
+		list.insertAdjacentHTML('beforeEnd', options.join('\n'));
+		list = document.getElementById("hr3");
+		list.insertAdjacentHTML('beforeEnd', options.join('\n'));
+		list = document.getElementById("sys1");
+		list.insertAdjacentHTML('beforeEnd', options.join('\n'));
+		list = document.getElementById("sys2");
+		list.insertAdjacentHTML('beforeEnd', options.join('\n'));
+		list = document.getElementById("sys3");
+		list.insertAdjacentHTML('beforeEnd', options.join('\n'));
+		list = document.getElementById("dia1");
+		list.insertAdjacentHTML('beforeEnd', options.join('\n'));
+		list = document.getElementById("dia2");
+		list.insertAdjacentHTML('beforeEnd', options.join('\n'));
+		list = document.getElementById("dia3");
+		list.insertAdjacentHTML('beforeEnd', options.join('\n'));
+		list = document.getElementById("runTime1");
+		list.insertAdjacentHTML('beforeEnd', times.join('\n'));
+		list = document.getElementById("runTime2");
+		list.insertAdjacentHTML('beforeEnd', heights.join('\n'));
+		list = document.getElementById("upperTime1");
+		list.insertAdjacentHTML('beforeEnd', times.join('\n'));
+		list = document.getElementById("upperTime2");
+		list.insertAdjacentHTML('beforeEnd', heights.join('\n'));
+		list = document.getElementById("lowerTime1");
+		list.insertAdjacentHTML('beforeEnd', times.join('\n'));
+		list = document.getElementById("lowerTime2");
+		list.insertAdjacentHTML('beforeEnd', heights.join('\n'));
+		list = document.getElementById("coreTime1");
+		list.insertAdjacentHTML('beforeEnd', times.join('\n'));
+		list = document.getElementById("coreTime2");
+		list.insertAdjacentHTML('beforeEnd', heights.join('\n'));
+	}
+</script> 
+</head>
+
+
+<body onload=update()>
+	<div class="container p-3 mb-2 bg-light">
+        <ul class="nav nav-tabs justify-content-center">
+            <li class="nav-item" onclick=saveUser()>
+                <a class="nav-link active" id="user-tab" data-toggle="tab" href="#user" role="tab" aria-controls="user" aria-selected="true"><b id='username'></b></a>
+            </li>
+            <li class="nav-item" onclick=saveUser()>
+                <a class="nav-link" id="heart-tab" data-toggle="tab" href="#heart" role="tab" aria-controls="heart" aria-selected="false">Heart Rate</a>
+            </li>
+            <li class="nav-item" onclick=saveUser()>
+                <a class="nav-link" id="blood-tab" data-toggle="tab" href="#blood" role="tab" aria-controls="blood" aria-selected="false">Blood Pressure</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id='exercises' data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Exercise</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" onclick=saveUser() id="exercise1-tab" data-toggle="tab" href="#exercise1" role="tab" aria-controls="exercise1" aria-selected="false">Cardio</a>
+                    <a class="dropdown-item" onclick=saveUser() id="exercise2-tab" data-toggle="tab" href="#exercise2" role="tab" aria-controls="exercise2" aria-selected="false">Upper Body</a>
+                    <a class="dropdown-item" onclick=saveUser() id="exercise3-tab" data-toggle="tab" href="#exercise3" role="tab" aria-controls="exercise3" aria-selected="false">Lower Body</a>
+					<a class="dropdown-item" onclick=saveUser() id="exercise4-tab" data-toggle="tab" href="#exercise4" role="tab" aria-controls="exercise4" aria-selected="false">Core</a>
+                </div>
+            </li>
+        </ul>
+        <div class="tab-content" id="tabCon">
+			<div class="tab-pane fade show active" id="user" role="tabpanel" aria-labelledby="user-tab"> 
+                <div class="inside">
+					<div id='nameInfo' style="display:none">
+						<b>Name: </b>
+						<span id='firstName'></span>
+						<span>, </span>
+						<span id='lastName'></span>
+					</div>
+					<form id='nameForm' style="display:block">
+						<b>Name: </b>
+						<input type="text" placeholder='First Name' id='fname' style="display: ">
+						<span>, </span>
+						<input type = "text" placeholder ='Last Name' id='lname' style="display: ">
+					</form>
+					<div id='ageInfo' style="display:none">
+						<b>Age: </b>
+						<span id='age'></span>
+					</div>
+					<form id='ageForm' style="display:block">
+						<b>Age: </b>
+						<select id="age2" name="age2"></select><select id="age1" name="age"></select>
+					</form>
+					<div id='heightInfo' style="display:none">
+						<b>Height: </b>
+						<span id='height'></span>
+					</div>
+					<form id='heightForm' style="display:block">
+						<b>Height: </b>
+						<select id="height2" name="height2"></select><select id="height1" name="height1"></select>
+					</form>
+					<div id='weightInfo' style="display:none">
+						<b>Weight: </b>
+						<span id='weight'></span>
+					</div>
+					<form id='weightForm' style="display:block">
+						<b>Weight: </b>
+						<select id="weight3" name="weight3"></select><select id="weight2" name="weight2"></select><select id="weight1" name="weight"></select>
+					</form>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="heart" role="tabpanel" aria-labelledby="heart-tab"> 
+                <div class="inside">
+					<div id='hrInfo' style="display:none">
+						<b>Heart Rate: </b>
+						<span id='hr'></span>
+					</div>
+					<form id='hrForm' style="display:block">
+						<b>Heart Rate:  </b>
+						<select id="hr3" name="hr3"></select><select id="hr2" name="hr2"></select><select id="hr1" name="hr1"></select>
+					</form>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="blood" role="tabpanel" aria-labelledby="blood-tab">
+                <div class="inside">
+					<div id='bpInfo' style="display:none">
+						<b>Blood Pressure: </b>
+						<span id='sys'></span><span>/</span><span id='dia'></span>
+					</div>
+					<form id='bpForm' style="display:block">
+						<b>Blood Pressure:</b>
+						<select id="sys3" name="sys3"></select><select id="sys2" name="sys2"></select><select id="sys1" name="sys1"></select>
+						<span>/</span>
+						<select id="dia3" name="dia3"></select><select id="dia2" name="dia2"></select><select id="dia1" name="dia1"></select>
+					</form>
+                </div>
+            </div>
+			
+			<div class="tab-pane fade" id="exercise1" role="tabpanel" aria-labelledby="exercise1-tab">
+                <div class="inside">
+					<div id='runInfo' style="display:none">
+						<b>Cardio Exercise: </b>
+						<span id='run'></span>
+					</div>
+					<form id='runForm' style="display:block">
+						<b>Cardio Exercise:  </b>
+						<select id="runTime2" name="runTime2"></select><select id="runTime1" name="runTime1"></select>
+					</form>
+                </div>
+            </div>    
+            <div class="tab-pane fade" id="exercise2" role="tabpanel" aria-labelledby="exercise2-tab">
+				<div class="inside">
+					<div id='ubInfo' style="display:none">
+						<b>Upper-Body Exercise:  </b>
+						<span id='upper'></span>
+					</div>
+					<form id='ubForm' style="display:block">
+						<b>Upper-Body Exercise:  </b>
+						<select id="upperTime2" name="upperTime2"></select><select id="upperTime1" name="upperTime1"></select>
+					</form>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="exercise3" role="tabpanel" aria-labelledby="exercise3-tab">
+                <div class="inside">
+					<div id='lbInfo' style="display:none">
+						<b>Lower-Body Exercise:  </b>
+						<span id='lower'></span>
+					</div>
+					<form id='lbForm' style="display:block">
+						<b>Lower-Body Exercise:  </b>
+						<select id="lowerTime2" name="lowerTime2"></select><select id="lowerTime1" name="lowerTime1"></select>
+					</form>
+                </div>
+            </div>
+			<div class="tab-pane fade" id="exercise4" role="tabpanel" aria-labelledby="exercise4-tab">
+                <div class="inside">
+					<div id='coreInfo' style="display:none">
+						<b>Core exercise: </b>
+						<span id='core'></span>
+					</div>
+					<form id='coreForm' style="display:block">
+						<b>Core exercise:  </b>
+						<select id="coreTime2" name="coreTime2"></select><select id="coreTime1" name="coreTime1"></select>
+					</form>
+                </div>
+            </div>
+			
+        </div>
+			
+    </div>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+</body>
+</html>
